@@ -31,3 +31,4 @@ D:\Projects\MYPROGRAM\C\SimpleTodoAPI\obj\Debug\net10.0\refint\SimpleTodoAPI.dll
 D:\Projects\MYPROGRAM\C\SimpleTodoAPI\obj\Debug\net10.0\SimpleTodoAPI.pdb
 D:\Projects\MYPROGRAM\C\SimpleTodoAPI\obj\Debug\net10.0\SimpleTodoAPI.genruntimeconfig.cache
 D:\Projects\MYPROGRAM\C\SimpleTodoAPI\obj\Debug\net10.0\ref\SimpleTodoAPI.dll
+D:\Projects\MYPROGRAM\C\SimpleTodoAPI\obj\Debug\net10.0\SimpleTodoAPI.sourcelink.json
