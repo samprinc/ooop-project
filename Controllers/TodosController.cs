@@ -10,7 +10,7 @@ public class TodosController : ControllerBase
     // The Static List (Our Temporary Database)
     private static List<TodoItem> _todos = new List<TodoItem>
     {
-        new TodoItem { Id = 1, Title = "Learn ASP.NET", IsCompleted = false },
+        new TodoItem { Id = 1, Title = "Learn ASP.NET", IsCompleted = false, Description = "Go through the official documentation and build a sample project." },
         new TodoItem { Id = 2, Title = "Drink Water", IsCompleted = true }
     };
 
@@ -21,7 +21,7 @@ public class TodosController : ControllerBase
         return Ok(_todos);
     }
 
-    // POST: api/todos
+    // POST: api/todos aw
     [HttpPost]
     public IActionResult AddTodo(TodoItem newItem)
     {
