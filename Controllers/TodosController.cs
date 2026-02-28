@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // TWEAK: Added this to use async database commands like ToListAsync()
+using Microsoft.EntityFrameworkCore; 
 using SimpleTodoAPI.Models;
-using SimpleTodoAPI.Data; // TWEAK: Added this so the controller can find AppDbContext
+using SimpleTodoAPI.Data; 
 
 namespace SimpleTodoAPI.Controllers;
 
@@ -9,24 +9,20 @@ namespace SimpleTodoAPI.Controllers;
 [Route("api/[controller]")]
 public class TodosController : ControllerBase
 {
-    // FIX: Removed the static list (_todos). 
-    // We now declare a private variable to hold our real database context.
+    // This variable connects our Controller to the Database
     private readonly AppDbContext _context;
 
-    // TWEAK: Added a constructor. 
-    // This is called "Dependency Injection". It automatically hands the live database connection to this controller when the app runs.
+    // This constructor sets up the database connection automatically
     public TodosController(AppDbContext context)
     {
         _context = context;
     }
 
-    // GET: api/todos/{id}
+    // GET: api/todos/{id} - Finds one specific task by its ID
     [HttpGet("{id}")]
-    // TWEAK: Changed to 'async Task<IActionResult>'. Database calls take time, so making it 'async' prevents the app from freezing while it waits for SQL.
     public async Task<IActionResult> GetTodo(int id)
     {
-        // FIX: Replaced _todos.FirstOrDefault() with _context.TodoItems.FindAsync(id).
-        // FindAsync is a built-in EF Core method to quickly find a record in the database by its Primary Key.
+        // We look through the database for the matching ID
         var todo = await _context.TodoItems.FindAsync(id);
         
         if (todo == null)
@@ -36,37 +32,33 @@ public class TodosController : ControllerBase
         return Ok(todo);
     }
 
-    // GET: api/todos
+    // GET: api/todos - Gets the full list of tasks from the database
     [HttpGet]
     public async Task<IActionResult> GetAllTodos()
     {
-        // FIX: Replaced returning the static list with querying the real database.
-        // ToListAsync() fetches all records from the TodoItems table in your SQL database.
+        // Fetches every task saved in the SQL table
         var todos = await _context.TodoItems.ToListAsync();
         return Ok(todos);
     }
 
-    // POST: api/todos
+    // POST: api/todos - Adds a new task to the database
     [HttpPost]
     public async Task<IActionResult> AddTodo(TodoItem newItem)
     {
-        // FIX: Removed 'newItem.Id = _todos.Count + 1;' 
-        // We don't need to calculate IDs manually anymore because the SQL database automatically generates and increments the ID for us!
+        // We add the new task to the list...
+        _context.TodoItems.Add(newItem); 
         
-        _context.TodoItems.Add(newItem); // Stages the new item to be added
-        
-        // TWEAK: Added SaveChangesAsync(). 
-        // When using a real database, nothing actually saves until you call this command!
+        // ...and then we save it permanently to the database
         await _context.SaveChangesAsync(); 
         
         return Ok(newItem);
     }
 
-    // PUT: api/todos/{id}
+    // PUT: api/todos/{id} - Updates an existing task
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTodo(int id, TodoItem updatedItem)
     {
-        // Step 1: Find the existing item in the real database
+        // First, find the task we want to change
         var todo = await _context.TodoItems.FindAsync(id);
         
         if (todo == null)
@@ -74,20 +66,19 @@ public class TodosController : ControllerBase
             return NotFound($"Todo item with ID {id} not found.");
         }
 
-        // Step 2: Update the properties (your logic here was already perfect)
+        // Apply the new changes to the task
         todo.Title = updatedItem.Title;
         todo.Description = updatedItem.Description;
         todo.IsCompleted = updatedItem.IsCompleted;
         todo.Email = updatedItem.Email;
 
-        // FIX: We must tell the database to permanently save these new changes.
+        // Save the changes back to the database
         await _context.SaveChangesAsync();
 
         return Ok(todo);
     }
 
-    // DELETE: api/todos/{id}
-    // TWEAK: I added a Delete method for you! Since you are using a real database now, you will definitely want the ability to delete records.
+    // DELETE: api/todos/{id} - Removes a task permanently
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTodo(int id)
     {
@@ -97,9 +88,10 @@ public class TodosController : ControllerBase
             return NotFound($"Todo item with ID {id} not found.");
         }
 
-        _context.TodoItems.Remove(todo); // Stages the item for deletion
-        await _context.SaveChangesAsync(); // Executes the deletion in SQL
+        // Remove the item and update the database
+        _context.TodoItems.Remove(todo); 
+        await _context.SaveChangesAsync(); 
 
-        return NoContent(); // 204 No Content is the standard success response for a Delete action
+        return NoContent(); 
     }
 }
