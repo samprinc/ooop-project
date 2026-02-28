@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SimpleTodoAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe5b87b4f725334b003ccb50a4d25b523417c53b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1a61a29e72627a0ef49b06e9c53cf804dcfb601")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimpleTodoAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimpleTodoAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
